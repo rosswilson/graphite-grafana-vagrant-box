@@ -1,45 +1,51 @@
 ---
-- name: ensure APT official nginx key
+- name: Ensure APT official nginx key
   apt_key: url=http://nginx.org/keys/nginx_signing.key
 
-- name: ensure APT official nginx repository
+- name: Ensure APT official nginx repository
   apt_repository: repo="deb http://nginx.org/packages/{{ ansible_distribution|lower }}/ {{ ansible_distribution_release }} nginx"
 
-- name: install the nginx package
+- name: Install the nginx package
   apt: name=nginx state=present
 
-- name: create the directories for site specific configurations
+- name: Create the directories for site specific configurations
   file: path={{nginx_conf_dir}}/{{ item }} state=directory owner=root group={{nginx_group}} mode=0755
   with_items:
     - "sites-available"
     - "sites-enabled"
 
-- name: remove nginx conf.d directory, as we're using site-enabled
+- name: Remove nginx conf.d directory, as we're using site-enabled
   file: path="{{ nginx_log_dir }}/conf.d" state=absent
 
-- name: ensure log directory exist
+- name: Ensure log directory exist
   file: path={{ nginx_log_dir }} state=directory owner={{nginx_user}} group={{nginx_group}} mode=0755
 
-- name: copy the nginx configuration file
+- name: Copy the nginx configuration file
   template: src=nginx.conf.j2 dest={{nginx_conf_dir}}/nginx.conf
+  register: nginx_config
   notify:
    - restart nginx
 
-- name: create the configurations for sites
+- name: Create the configurations for sites
   template: src=site.conf.j2 dest={{nginx_conf_dir}}/sites-available/default.conf
+  register: vhost_config
   notify:
    - restart nginx
 
-- name: create links for sites-enabled
+- name: Create links for sites-enabled
   file: state=link src={{nginx_conf_dir}}/sites-available/default.conf dest={{nginx_conf_dir}}/sites-enabled/default.conf
   notify:
    - reload nginx
 
-- name: check nginx syntax of configuration files
+- name: Check nginx syntax of configuration files
   shell: "nginx -t"
   register: result
   changed_when: "result.rc != 0"
   always_run: yes
 
-- name: start the nginx service
+- name: Immediately restart nginx on config changes
+  service: name=nginx state=restarted
+  when: nginx_config.changed or vhost_config.changed
+
+- name: Ensure the nginx service is started
   service: name={{ nginx_service_name }} state=started enabled=yes

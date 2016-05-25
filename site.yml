@@ -1,7 +1,16 @@
 - hosts: all
   become: yes
+  gather_facts: no
+  pre_tasks:
+    - name: Install python2
+      raw: sudo apt-get -y install python-simplejson
+
+- hosts: all
+  become: yes
   roles:
     - base
     - nginx
     - graphite-grafana
     - grafana-data
+    - jenkins
+    - node

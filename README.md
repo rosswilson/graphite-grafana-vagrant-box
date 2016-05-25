@@ -6,7 +6,7 @@ Quickly provision a Vagrant box with:
 * Carbon (http://graphite.wikidot.com/carbon)
 * Grafana (http://grafana.org/)
 
-The Ansible playbooks and associated configuration has been adapted from https://github.com/pellepelster/graphite-grafana-vagrant-box
+The Ansible playbooks and associated configuration have been adapted from https://github.com/pellepelster/graphite-grafana-vagrant-box
 
 ## Installation
 

@@ -1,0 +1,3 @@
+---
+nodejs_nodesource_pin_priority: 500
+debian_repo_version: "node_5.x"

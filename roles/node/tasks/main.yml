@@ -1,0 +1,26 @@
+---
+- name: Import the NodeSource GPG key into apt
+  apt_key:
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    state: present
+
+- name: Add NodeSource deb repository
+  apt_repository:
+    repo: 'deb https://deb.nodesource.com/{{ debian_repo_version }} {{ ansible_distribution_release }} main'
+    state: present
+
+- name: Add NodeSource deb-src repository
+  apt_repository:
+    repo: 'deb-src https://deb.nodesource.com/{{ debian_repo_version }} {{ ansible_distribution_release }} main'
+    state: present
+
+- name: Add NodeSource repository preferences
+  template:
+    src: node_source.j2
+    dest: /etc/apt/preferences.d/deb_nodesource_com_node.pref
+
+- name: Install nodejs
+  apt:
+    pkg: nodejs
+    state: installed
+    update_cache: yes
