@@ -1,0 +1,10 @@
+---
+nginx_service_name: "nginx"
+nginx_conf_dir: "/etc/nginx"
+
+nginx_user: "www-data"
+nginx_group: "www-data"
+
+nginx_worker_processes: "{{ ansible_processor_vcpus }}"
+nginx_worker_rlimit_nofile: 1024
+nginx_log_dir: "/var/log/nginx"

@@ -1,0 +1,4 @@
+---
+- include: basic.yml
+- include: locale.yml
+- include: timezone.yml

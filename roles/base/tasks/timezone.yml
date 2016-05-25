@@ -1,0 +1,5 @@
+---
+- name: set timezone to London
+  copy: content='Europe/London\n' dest=/etc/timezone owner=root group=root mode=0644
+  notify:
+    - update timezone

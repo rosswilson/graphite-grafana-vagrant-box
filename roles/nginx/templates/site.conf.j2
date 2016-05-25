@@ -1,0 +1,26 @@
+# {{ ansible_managed }}
+
+server {
+
+  listen 80;
+
+  proxy_headers_hash_max_size 1024;
+
+  server_name localhost;
+
+  root /srv/www;
+
+  location /grafana {
+    proxy_set_header   X-Real-IP        $remote_addr;
+    proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+    proxy_set_header   Host             $http_host;
+    rewrite  ^/grafana/(.*)  /$1 break;
+    proxy_pass http://localhost:3000;
+  }
+
+  location / {
+    include uwsgi_params;
+    uwsgi_pass 127.0.0.1:3031;
+  }
+
+}

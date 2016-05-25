@@ -1,0 +1,9 @@
+---
+- name: restart carbon-cache
+  service: name=carbon-cache state=restarted
+
+- name: restart grafana
+  service: name=grafana-server state=restarted
+
+- name: restart uwsgi
+  service: name=uwsgi state=restarted
