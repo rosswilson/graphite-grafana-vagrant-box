@@ -9,7 +9,7 @@
   lineinfile: dest=/etc/apt/apt.conf.d/50unattended-upgrades regexp="$ubuntu_release-updates" state=absent
 
 - name: Prevent ssh daemon from accepting locale variables
-  action: lineinfile dest=/etc/ssh/sshd_config regexp="AcceptEnv" state=absent
+  lineinfile: dest=/etc/ssh/sshd_config regexp="AcceptEnv" state=absent
   register: sshd_config
 
 - name: Immediately restart ssh daemon on config changes
