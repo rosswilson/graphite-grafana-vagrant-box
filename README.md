@@ -25,9 +25,9 @@ This process can take a few minutes. Once finished, you'll have a shiney new vir
 
 Follow the next section to setup Jenkins. It'll take you 2 minutes.
 
-## Jenkins
+## Setup
 
-### Basic Setup
+### Jenkins User
 
 The admin password for Jenkins is auto generated and stored in a file on the server. We need to read this file to proceed with the setup.
 
@@ -46,7 +46,7 @@ The admin password for Jenkins is auto generated and stored in a file on the ser
 
 1. Create an admin user - fill out the fields and pick a secure password.
 
-### GitHub Credentials
+### Jenkins GitHub Credentials
 
 1. Run the following command in your Terminal window:
 
@@ -58,7 +58,7 @@ The admin password for Jenkins is auto generated and stored in a file on the ser
 
 1. Go to [GitHub Deploy Keys](https://github.com/bbc/comscore-graphite-ingest/settings/keys) for the comscore-graphite-ingest repo and register the SSH key you just copied.
 
-### DAX Credentials
+### Jenkins DAX Credentials
 
 1. Go to the Configure System section of [your instance of Jenkins](http://localhost:1080/jenkins/configure)
 
@@ -68,6 +68,10 @@ The admin password for Jenkins is auto generated and stored in a file on the ser
 
   * DAX_USER
   * DAX_PASSWORD
+
+### Creating a Jenkins Job
+
+1.
 
 ## Provision Again
 
