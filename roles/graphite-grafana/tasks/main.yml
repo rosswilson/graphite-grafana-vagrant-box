@@ -28,6 +28,16 @@
   notify:
     - Restart carbon-cache
 
+- name: Copy carbon storage schema config
+  template: src=storage-schemas.conf dest=/etc/carbon/storage-schemas.conf
+  notify:
+    - Restart carbon-cache
+
+- name: Copy main carbon config
+  template: src=carbon.conf dest=/etc/carbon/carbon.conf
+  notify:
+    - Restart carbon-cache
+
 - name: Install graphite-web
   apt: name=graphite-web state=present
 
