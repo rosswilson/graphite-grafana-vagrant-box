@@ -8,7 +8,6 @@ jenkins_jar_location: /opt/jenkins-cli.jar
 jenkins_plugins: [ansicolor, ]
 jenkins_init_file: /etc/default/jenkins
 jenkins_http_port_param: HTTP_PORT
-jenkins_plugin_update: true
-jenkins_admin: { username: admin, password: admin }
 jenkins_connection_delay: 5
 jenkins_connection_retries: 60
+jenkins_config_file: /var/lib/jenkins/config.xml

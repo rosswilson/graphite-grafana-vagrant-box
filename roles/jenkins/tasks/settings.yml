@@ -1,4 +1,8 @@
 ---
+- name: Copy credentials file
+  template: src=credentials.xml dest=/var/lib/jenkins/credentials.xml owner=jenkins group=jenkins
+  register: jenkins_credentials_file
+
 - name: Ensure URL prefix is present in Jenkins config
   lineinfile:
     dest: "{{ jenkins_init_file }}"
@@ -7,11 +11,7 @@
     state: present
   register: jenkins_init_prefix
 
-- name: Immediately restart Jenkins on init config changes
-  service: name=jenkins state=restarted
-  when: jenkins_init_prefix.changed
-
-- name: Set HTTP port in Jenkins config.
+- name: Set HTTP port in Jenkins config
   lineinfile:
     backrefs: yes
     dest: "{{ jenkins_init_file }}"
@@ -19,6 +19,6 @@
     line: '{{ jenkins_http_port_param }}={{ jenkins_http_port }}'
   register: jenkins_http_config
 
-- name: Immediately restart Jenkins on http config changes.
+- name: Immediately restart Jenkins on config changes
   service: name=jenkins state=restarted
-  when: jenkins_http_config.changed
+  when: (jenkins_credentials_file.changed or jenkins_init_prefix.changed or jenkins_http_config.changed)

@@ -13,7 +13,7 @@
 - name: Ensure Jenkins is installed
   apt: name=jenkins state=installed update_cache=true
 
-- name: Configure jenkins settings (path prefix and port)
+- name: Configure jenkins settings
   include: settings.yml
 
 - name: Ensure Jenkins is started and runs on startup.
@@ -36,8 +36,9 @@
   retries: "{{ jenkins_connection_retries }}"
   delay: "{{ jenkins_connection_delay }}"
 
+- name: Ensure .ssh directory exists for jenkins user
+  file: dest=/var/lib/jenkins/.ssh state=directory owner=jenkins group=jenkins
+
 - name: Create SSH key for Jenins to access GitHub
   command: ssh-keygen -N '' -f /var/lib/jenkins/.ssh/id_rsa creates=/var/lib/jenkins/.ssh/id_rsa
-  
-# - name: Update Jenkins and install configured plugins
-#   include: plugins.yml
+  become_user: jenkins
