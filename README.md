@@ -71,7 +71,28 @@ The admin password for Jenkins is auto generated and stored in a file on the ser
 
 ### Creating a Jenkins Job
 
-1.
+Now, lets say you're using the [comscore-graphite-ingest](https://github.com/bbc/comscore-graphite-ingest) project and have created a new job file (a `.js` file in the `jobs` directory). I recommend creating a separate Jenkins job for each ingester job file. This way you have maximum control over the scheduling of your ingest operation job, and it keeps the console output in one place.
+
+1. From the Jenkins home screen, click "New Item".
+
+1. Give your job a decent name, choose the "Freestyle project" type, click Ok.
+
+1. Under "Source Code Management", choose the Git radio button.
+
+1. Set the Repository URL to: `git@github.com:bbc/comscore-graphite-ingest.git`
+
+1. Choose the `Read-only comscore-graphite-ingest access` option from the Credentials drop down menu.
+
+1. Click "Add build step" and then "Execute shell".
+
+1. In the Command box, paste:
+
+  ```sh
+npm install
+node ./src/ingester.js my_ingest_job_name_goes_here
+  ```
+
+Now run your job and check the console output. If you encounter errors, try hopping over to the [comscore-graphite-ingest](https://github.com/bbc/comscore-graphite-ingest) project for data-ingest specific help.
 
 ## Provision Again
 
