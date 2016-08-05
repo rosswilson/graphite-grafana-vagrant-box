@@ -23,19 +23,13 @@
 - name: Copy the nginx configuration file
   template: src=nginx.conf.j2 dest={{nginx_conf_dir}}/nginx.conf
   register: nginx_config
-  notify:
-   - restart nginx
 
 - name: Create the configurations for sites
   template: src=site.conf.j2 dest={{nginx_conf_dir}}/sites-available/default.conf
   register: vhost_config
-  notify:
-   - restart nginx
 
 - name: Create links for sites-enabled
   file: state=link src={{nginx_conf_dir}}/sites-available/default.conf dest={{nginx_conf_dir}}/sites-enabled/default.conf
-  notify:
-   - reload nginx
 
 - name: Check nginx syntax of configuration files
   shell: "nginx -t"
@@ -43,9 +37,8 @@
   changed_when: "result.rc != 0"
   always_run: yes
 
-- name: Immediately restart nginx on config changes
+- name: Immediately restart nginx
   service: name=nginx state=restarted
-  when: nginx_config.changed or vhost_config.changed
 
 - name: Ensure the nginx service is started
   service: name={{ nginx_service_name }} state=started enabled=yes
