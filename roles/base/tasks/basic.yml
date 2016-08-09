@@ -15,3 +15,9 @@
 - name: Immediately restart ssh daemon on config changes
   service: name=ssh state=restarted
   when: sshd_config.changed
+
+- name: Install htop
+  action: apt pkg=htop state=present
+
+- name: Install ntp
+  action: apt pkg=ntp state=present
